@@ -134,7 +134,7 @@
         /* Main Content */
         #main-content {
             flex-grow: 1;
-            padding: 40px;
+            padding: 0px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -145,7 +145,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 10px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 10px;
         }
@@ -195,8 +194,7 @@
         #editor-container {
             flex-grow: 1;
             background: var(--card-bg);
-            padding: 30px;
-            border-radius: 8px;
+            padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             font-size: 1.1rem;
             display: flex;
@@ -275,7 +273,7 @@
                 <button id="new-note-btn" class="btn">+ New Note</button>
             </div>
             <div class="sidebar-actions">
-                <button class="btn" onclick="exportNotes()">Export JSON</button>
+                <button class="btn" onclick="exportNotes()">Export</button>
                 <button class="btn" onclick="document.getElementById('import-input').click()">Import</button>
                 <input type="file" id="import-input" accept=".json" onchange="importNotes(event)">
             </div>
@@ -289,10 +287,10 @@
             <input type="text" id="note-title" placeholder="Enter Note Title...">
         </div>
 
-        <div class="instructions">
-            <strong>Dark Mode Guide:</strong> <kbd>Ctrl+E</kbd> = Math Block | <kbd>Enter</kbd> = New Line |
-            <kbd>Shift+Enter</kbd> = Force Text Line | <kbd>Backspace</kbd> = Delete Empty Block.
-        </div>
+        <!-- <div class="instructions"> -->
+            <!-- <strong>Dark Mode Guide:</strong> <kbd>Ctrl+E</kbd> = Math Block | <kbd>Enter</kbd> = New Line | -->
+            <!-- <kbd>Shift+Enter</kbd> = Force Text Line | <kbd>Backspace</kbd> = Delete Empty Block. -->
+        <!-- </div> -->
 
         <div id="editor-container"></div>
     </main>
