@@ -431,23 +431,27 @@
         }
 
         function createMathDOM(blockData) {
-            const div = document.createElement('div');
-            div.className = 'block math-block';
-            div.dataset.id = blockData.id;
-            const span = document.createElement('span');
-            span.textContent = blockData.value;
-            div.appendChild(span);
+                const div = document.createElement('div');
+                div.className = 'block math-block';
+                div.dataset.id = blockData.id;
+                const span = document.createElement('span');
+                span.textContent = blockData.value;
+                div.appendChild(span);
 
-            const mf = MQ.MathField(span, {
-                handlers: {
-                    edit: () => { blockData.value = mf.latex(); saveToDisk(); },
-                    upOutOf: () => focusPrevBlock(div),
-                    downOutOf: () => focusNextBlock(div)
-                }
-            });
-            div.mathField = mf;
-            return div;
-        }
+                const mf = MQ.MathField(span, {
+                    // Automatically convert these words to symbols instantly
+                    autoCommands: 'pi theta sqrt sum int alpha beta gamma delta epsilon',
+                    // Automatically format these as non-italicized functions
+                    autoOperatorNames: 'sin cos tan log ln',
+                    handlers: {
+                        edit: () => { blockData.value = mf.latex(); saveToDisk(); },
+                        upOutOf: () => focusPrevBlock(div),
+                        downOutOf: () => focusNextBlock(div)
+                    }
+                });
+                div.mathField = mf;
+                return div;
+            }
 
         // --- Helpers ---
         function focusBlock(blockEl) {
