@@ -32,7 +32,8 @@
 
         body {
             display: flex;
-            height: 100vh;
+            height: 100vh;  /* Fallback for older browsers */
+            height: 100dvh; /* The magic fix for mobile address bars */
             background-color: var(--bg-color);
             color: var(--text-color);
             overflow: hidden;
