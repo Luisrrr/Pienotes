@@ -517,13 +517,13 @@
                     const blockEl = e.target.closest('.block');
                     if (!blockEl) return;
 
-                    // Handle Vertical Navigation for Text Blocks (from previous fix)
+                    // Handle Vertical Navigation for Text Blocks
                     if (blockEl.classList.contains('text-block')) {
-                        if (e.key === 'ArrowUp' && isCaretAtStart(blockEl)) {
+                        if (e.key === 'ArrowUp') {
                             e.preventDefault();
                             focusPrevBlock(blockEl);
                         }
-                        if (e.key === 'ArrowDown' && isCaretAtEnd(blockEl)) {
+                        if (e.key === 'ArrowDown') {
                             e.preventDefault();
                             focusNextBlock(blockEl);
                         }
