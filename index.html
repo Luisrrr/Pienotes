@@ -424,9 +424,15 @@
             const div = document.createElement('div');
             div.className = 'block text-block';
             div.contentEditable = true;
-            div.textContent = blockData.value;
+
+            // Use innerHTML instead of textContent to load formatting
+            div.innerHTML = blockData.value;
+
             div.dataset.id = blockData.id;
-            div.oninput = () => { blockData.value = div.textContent; saveToDisk(); };
+
+            // Use innerHTML instead of textContent to save formatting
+            div.oninput = () => { blockData.value = div.innerHTML; saveToDisk(); };
+
             return div;
         }
 
