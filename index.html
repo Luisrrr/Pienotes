@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pienotes - Notes App Using MathQuill</title>
 
-    <script src="jquery.min.js"></script>
     <link rel="stylesheet" href="mathquill.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="mathquill.js"></script>
 
     <style>
@@ -173,24 +173,6 @@
             flex-grow: 1;
         }
 
-        .instructions {
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 20px;
-            background: #1a1a1a;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-
-        .instructions kbd {
-            background: #333;
-            padding: 1px 4px;
-            border-radius: 3px;
-            border: 1px solid #555;
-            color: #ddd;
-        }
-
         #editor-container {
             flex-grow: 1;
             background: var(--card-bg);
@@ -287,11 +269,6 @@
             <button id="toggle-sidebar-btn" title="Toggle Sidebar">☰</button>
             <input type="text" id="note-title" placeholder="Enter Note Title...">
         </div>
-
-        <!-- <div class="instructions"> -->
-            <!-- <strong>Dark Mode Guide:</strong> <kbd>Ctrl+E</kbd> = Math Block | <kbd>Enter</kbd> = New Line | -->
-            <!-- <kbd>Shift+Enter</kbd> = Force Text Line | <kbd>Backspace</kbd> = Delete Empty Block. -->
-        <!-- </div> -->
 
         <div id="editor-container"></div>
     </main>
@@ -447,9 +424,15 @@
 
                 const mf = MQ.MathField(span, {
                     // Automatically convert these words to symbols instantly
-                    autoCommands: 'pi theta sqrt sum int alpha beta gamma delta epsilon',
+                    autoCommands: 'pi theta alpha beta gamma delta epsilon lambda infinity reals natnums cnums' +
+                                    'neq approx ' +
+                                    'times div ast ' +
+                                    'sqrt nthroot sum int prod ' +
+                                    'parallel smile frown star ' +
+                                    'rarr rArr larr uarr darr rightarrow leftarrow uparrow downarrow overrightarrow overline underline vec implies',
                     // Automatically format these as non-italicized functions
-                    autoOperatorNames: 'sin cos tan log ln',
+                    autoOperatorNames: 'sin cos tan log ln dot solve zeros lim max min',
+                    supSubsRequireOperand: true,
                     handlers: {
                         edit: () => { blockData.value = mf.latex(); saveToDisk(); },
                         upOutOf: () => focusPrevBlock(div),
@@ -533,6 +516,12 @@
                         if (e.key === 'ArrowDown') {
                             e.preventDefault();
                             focusNextBlock(blockEl);
+                        }
+                        if (e.ctrlKey && e.shiftKey && (e.key === 'S' || e.key === 's')) {
+                            e.preventDefault();
+                            document.execCommand('strikeThrough', false, null);
+                            // Force text block evaluation updates back to state engine
+                            blockEl.dispatchEvent(new Event('input'));
                         }
                     }
 
