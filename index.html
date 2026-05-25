@@ -251,13 +251,13 @@
 
     <aside id="sidebar">
         <div id="sidebar-header">
-            <h2 style="color: white; margin-bottom: 10px;">Math Notes</h2>
+            <h2 style="color: white; margin-bottom: 10px;">Pienotes</h2>
             <div style="display:flex; gap: 5px;">
                 <button id="new-note-btn" class="btn">+ New Note</button>
             </div>
             <div class="sidebar-actions">
-                <button class="btn" onclick="exportNotes()">Export</button>
-                <button class="btn" onclick="document.getElementById('import-input').click()">Import</button>
+                <button class="btn" onclick="exportNotes()">Export All</button>
+                <button class="btn" onclick="document.getElementById('import-input').click()">Import All</button>
                 <input type="file" id="import-input" accept=".json" onchange="importNotes(event)">
             </div>
         </div>
@@ -424,7 +424,7 @@
 
                 const mf = MQ.MathField(span, {
                     // Automatically convert these words to symbols instantly
-                    autoCommands: 'pi theta alpha beta gamma delta epsilon lambda infinity reals natnums cnums ' +
+                    autoCommands: 'pi theta alpha beta gamma delta epsilon lambda infinity reals ' +
                                     'neq approx ' +
                                     'times div ast ' +
                                     'sqrt nthroot sum int prod ' +
@@ -446,6 +446,10 @@
         // --- Helpers ---
         function focusBlock(blockEl) {
             if (!blockEl) return;
+
+            // Save the ID of the block we are focusing
+            lastFocusedBlockId = blockEl.dataset.id;
+
             if (blockEl.classList.contains('text-block')) {
                 blockEl.focus();
             } else if (blockEl.mathField) {
@@ -463,7 +467,15 @@
             note.blocks.splice(idx + 1, 0, newBlock);
             saveToDisk();
             renderEditor();
-            setTimeout(() => focusBlock(document.querySelector(`[data-id="${newBlock.id}"]`)), 10);
+
+            setTimeout(() => {
+                const newEl = document.querySelector(`[data-id="${newBlock.id}"]`);
+                focusBlock(newEl);
+                if (newEl) {
+                    // Scroll the newly created block into view smoothly
+                    newEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 10);
         }
 
         // --- Global Listeners ---
@@ -538,7 +550,14 @@
                         if (block.type === 'text' && (block.value === '' || block.value === '\n')) {
                             block.type = 'math';
                             renderEditor();
-                            setTimeout(() => focusBlock(document.querySelector(`[data-id="${block.id}"]`)), 10);
+                            setTimeout(() => {
+                                const convertedEl = document.querySelector(`[data-id="${block.id}"]`);
+                                focusBlock(convertedEl);
+                                if (convertedEl) {
+                                    // Scroll into view after height changes
+                                    convertedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                }
+                            }, 10);
                         } else {
                             insertBlock(blockEl, 'math');
                         }
